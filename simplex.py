@@ -1,32 +1,27 @@
-def adjustTable(talbe, row, col):
-    pivot = talbe[row][col]
-    for i in range(len(talbe[row])):
-        talbe[row][i] /= pivot
-    for i in range(len(talbe)):
-        if i != row:
-            factor = talbe[i][col]
-            for j in range(len(talbe[i])):
-                talbe[i][j] -= factor * talbe[row][j]
+import numpy as np
+class Simplex:
+    _isMax = True
+    _z = []
+    _table = []
+    _cb = []
 
-def getRowToChange(table, function, isMaxProblem, base):
-    num = None
-    pos = None
-    for i in range(len(function)):
-        total = 0
-        for j in range(len(base)):
-            total += base[j]*table[j][i]
-        if not num or (total > 0 and total > num)if isMaxProblem else (total < 0 and total < num):
-            num = total
-            pos = i
-    return pos
+    def __init__(self, isMax, z, restrictions):
+        self._isMax = isMax
+        self._z = z
+        self._table = restrictions
+        self._setCb(restrictions)
 
-def getColumnOut(table, pos):
-    num = None
-    pos = None
-    for i in range(len(table)):
-        row = table[i]
-        total = row[-1] / row[pos]
-        if total > 0 and total < num:
-            num = total
-            pos = i
-    return pos
+
+    @property
+    def cb(self):
+        return self._cb
+
+    def _setCb(self, restrictions):
+        self._cb = np.zeros(len(restrictions))
+        for i in range(len(restrictions)):
+            print('i', i)
+            for j in range(len(restrictions[i]) - 1, -1, -1):
+                print('j', j)
+                if restrictions[i][j] == 1:
+                    self._cb[i] = j
+                    break
