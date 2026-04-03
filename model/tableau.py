@@ -7,7 +7,7 @@ class Tableau:
 
     @property
     def tableau(self):
-        return self.__tableau.copy()
+        return self.__tableau
     
     def pivot(self, row, col):
         pivot = self.__tableau[row, col]
@@ -23,11 +23,11 @@ class Tableau:
         return np.argmax(zRow[:-1])
     
     def getLeavingVariable(self, incomingCol):
-        col = self.__tableau[:-1, incomingCol]
-        b = self.__tableau[:, -1]
+        col = self.__tableau[1:, incomingCol]
+        b = self.__tableau[1:, -1]
 
         ratios = np.where(col > 0, b / col, np.inf)
-        return np.argmin(ratios)
+        return 1 + np.argmin(ratios)
     
     def isOptimal(self):
         zRow = self.__tableau[0]
