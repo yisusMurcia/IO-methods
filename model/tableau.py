@@ -26,9 +26,12 @@ class Tableau:
         col = self.__tableau[1:, incomingCol]
         b = self.__tableau[1:, -1]
 
-        ratios = np.where(col > 0, b / col, np.inf)
+        ratios = np.where((col > 0), b / col, np.inf)
         return 1 + np.argmin(ratios)
     
     def isOptimal(self):
         zRow = self.__tableau[0]
         return np.all(zRow[:-1] <= 0)
+    
+    def getVariablesCoefficients(self):
+        return self.__tableau[1:, -1]
