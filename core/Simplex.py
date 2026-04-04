@@ -9,6 +9,11 @@ class Simplex:
         self.__varNames = varNames
         self.__cb = cb
 
+    def __init__(self, tableau, varNames, cb):
+        self.__tableau = tableau
+        self.__varNames = varNames
+        self.__cb = cb
+
     def getSolution(self):
         while not self.__tableau.isOptimal():
             incoming = self.__tableau.getIncomingVariable()
