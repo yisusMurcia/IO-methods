@@ -53,7 +53,7 @@ class Adapter:
         return [objectiveFunction] + constraints
     
     def getTableau(self):
-        return Tableau(self.buildTable())
+        return Tableau(self.buildTable(), self.__objectiveFunction.isMax)
     
     @property
     def varNames(self):
