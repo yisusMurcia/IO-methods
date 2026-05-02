@@ -1,8 +1,8 @@
 import sys
 import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-from model.ObjectiveFunction import ObjectiveFunction
-from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout,  QLabel, QLineEdit, QComboBox
+from model.Constraint import Constraint
+from PySide6.QtWidgets import QWidget, QHBoxLayout,  QLabel, QLineEdit, QComboBox
 from PySide6.QtGui import QDoubleValidator
 
 class ConstraintView(QWidget):
@@ -36,7 +36,7 @@ class ConstraintView(QWidget):
 
     def addVariable(self, varName):
         self.__variableNames.append(varName)
-        label = QLabel(f"{varName}:")
+        label = QLabel(f"{"+" if varName != self.__variableNames[0] else ''}{varName}:")
         line = QLineEdit()
         line.setFixedWidth(60)
         line.setPlaceholderText(varName)
@@ -44,3 +44,16 @@ class ConstraintView(QWidget):
         self.__LineEdits.append(line)
         self.constraintInput.layout().addWidget(label)
         self.constraintInput.layout().addWidget(line)
+
+    def buildConstraint(self):
+        coefficients = []
+        for lineEdit in self.__LineEdits:
+            text = lineEdit.text()
+            if text == "":
+                coefficients.append(0.0)
+            else:
+                coefficients.append(float(text))
+        limitValueText = self.__limitValueEdit.text()
+        limitValue = float(limitValueText) if limitValueText != "" else 0.0
+        relation = self.lessGreaterComboBox.currentText()
+        return Constraint(coefficients, relation, limitValue)

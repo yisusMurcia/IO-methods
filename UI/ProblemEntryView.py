@@ -1,14 +1,15 @@
 from PySide6.QtWidgets import QMainWindow, QLabel, QPushButton, QWidget, QVBoxLayout
 from UI.ConstraitView import ConstraintView
 from UI.ObjectiveFunctionView import ObjectiveFunctionView
+from services.SolverService import SolverService
 
 class ProblemEntryView(QMainWindow):
-    def __init__(self, solverService):
+    def __init__(self):
         super().__init__()
-        self.__solverService = solverService
+        self.__solverService: SolverService = SolverService(self)
         self.__variablesNames = ["x1"]
-        self.__ObjFuncView = ObjectiveFunctionView(self.__variablesNames)
-        self.__constraintsViews = [ConstraintView(self.__variablesNames)]
+        self.__ObjFuncView: ObjectiveFunctionView = ObjectiveFunctionView(self.__variablesNames)
+        self.__constraintsViews: list[ConstraintView] = [ConstraintView(self.__variablesNames)]
 
         self.__constraintLayout = QWidget()
         self.__constraintLayout.setLayout(QVBoxLayout())
@@ -19,6 +20,9 @@ class ProblemEntryView(QMainWindow):
         self.__addConstraintButton = QPushButton("Add constraint")
         self.__variableNamesButton.clicked.connect(self.addVariable)
         self.__addConstraintButton.clicked.connect(self.addConstraint)
+
+        self.__solveButton = QPushButton("Solve")
+        self.__solveButton.clicked.connect(self.solveProblem)
         central_widget = QWidget()
 
         layout = QVBoxLayout(central_widget)
@@ -27,6 +31,7 @@ class ProblemEntryView(QMainWindow):
         layout.addWidget(self.__constraintLayout)
         layout.addWidget(self.__variableNamesButton)
         layout.addWidget(self.__addConstraintButton)
+        layout.addWidget(self.__solveButton)
         self.setCentralWidget(central_widget)
 
 
@@ -48,3 +53,8 @@ class ProblemEntryView(QMainWindow):
         constraintView = ConstraintView(self.__variablesNames)
         self.__constraintsViews.append(constraintView)
         self.__constraintLayout.layout().addWidget(constraintView)
+
+    def solveProblem(self):
+        objectiveFunction = self.__ObjFuncView.buildObjectiveFunction()
+        constraints = [constraintView.buildConstraint() for constraintView in self.__constraintsViews]
+        solution = self.__solverService.solve(objectiveFunction, constraints)

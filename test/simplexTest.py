@@ -1,7 +1,7 @@
 import sys
 import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-from core.Simplex import Simplex
+from core.Simplex import SimplexStrategy
 import unittest
 
 class TestSimplex(unittest.TestCase):
@@ -14,8 +14,8 @@ class TestSimplex(unittest.TestCase):
         ]
         varNames = ['x', 'y', 's1', 's2']
         cb = ['s1', 's2']
-        simplex = Simplex(tableau, True, varNames, cb)
-        solution = simplex.getSolution()
+        simplex = SimplexStrategy(tableau, True, varNames, cb)
+        solution = simplex.solve()
         print(solution)
         # Optimal solution: x = 1, y = 3, objective = 9
         self.assertIn('x = 1', solution)

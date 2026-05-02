@@ -38,3 +38,14 @@ class ObjectiveFunctionView(QWidget):
         self.__LineEdits.append(line)
         self.objectiveInput.layout().addWidget(label)
         self.objectiveInput.layout().addWidget(line)
+
+    def buildObjectiveFunction(self):
+        coefficients = []
+        for lineEdit in self.__LineEdits:
+            text = lineEdit.text()
+            if text == "":
+                coefficients.append(0.0)
+            else:
+                coefficients.append(float(text))
+        isMaximize = self.maxMinComboBox.currentText() == "Maximize"
+        return ObjectiveFunction(coefficients, isMaximize)
