@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QMainWindow, QLabel, QPushButton, QWidget, QVBoxLayout
+from PySide6.QtWidgets import QMainWindow, QLabel, QMessageBox, QPushButton, QWidget, QVBoxLayout
 from UI.ConstraitView import ConstraintView
 from UI.ObjectiveFunctionView import ObjectiveFunctionView
 from services.SolverService import SolverService
@@ -23,6 +23,10 @@ class ProblemEntryView(QMainWindow):
 
         self.__solveButton = QPushButton("Solve")
         self.__solveButton.clicked.connect(self.solveProblem)
+
+        self.__answerBox = QMessageBox()
+
+
         central_widget = QWidget()
 
         layout = QVBoxLayout(central_widget)
@@ -58,3 +62,5 @@ class ProblemEntryView(QMainWindow):
         objectiveFunction = self.__ObjFuncView.buildObjectiveFunction()
         constraints = [constraintView.buildConstraint() for constraintView in self.__constraintsViews]
         solution = self.__solverService.solve(objectiveFunction, constraints)
+        self.__answerBox.setText(solution)
+        self.__answerBox.exec()

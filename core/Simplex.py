@@ -36,6 +36,9 @@ class SimplexStrategy(SolverStrategy):
             leaving = self.__tableau.getLeavingVariable(incoming)
             self.__cb[leaving - 1] = self.__varNames[incoming]
             self.__tableau.pivot(leaving, incoming)
-        coef = self.__tableau.getVariablesCoefficients()
-        solution = "".join(f"{self.__cb[i]} = {coef[i]} " for i in range(len(coef)))
-        return solution
+        if not self.__tableau.isOptimal():
+            return "No solution"
+        else:
+            coef = self.__tableau.getVariablesCoefficients()
+            solution = "".join(f"{self.__cb[i]} = {coef[i]} " for i in range(len(coef)))
+            return solution
