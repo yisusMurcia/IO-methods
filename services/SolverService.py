@@ -18,5 +18,4 @@ class SolverService:
         if not self.__solverStrategy:
             raise ValueError("No solver strategy set")
         result = self.__solverStrategy.solve(objectiveFunction, constraints)
-        print(result)
         return result

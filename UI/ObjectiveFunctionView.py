@@ -30,14 +30,16 @@ class ObjectiveFunctionView(QWidget):
 
     def addVariable(self, varName):
         self.__variableNames.append(varName)
-        label = QLabel(f"{varName}:")
+        label = QLabel(f"{varName}")
         line = QLineEdit()
         line.setFixedWidth(60)
         line.setPlaceholderText(varName)
         line.setValidator(self.__validator)
         self.__LineEdits.append(line)
-        self.objectiveInput.layout().addWidget(label)
+        if(varName != self.__variableNames[0]):
+            self.objectiveInput.layout().addWidget(QLabel("+"))
         self.objectiveInput.layout().addWidget(line)
+        self.objectiveInput.layout().addWidget(label)
 
     def buildObjectiveFunction(self):
         coefficients = []
