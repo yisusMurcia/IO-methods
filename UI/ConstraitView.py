@@ -44,10 +44,7 @@ class ConstraintView(QWidget):
         self.__LineEdits.append(line)
         if(varName != self.__variableNames[0]):
             self.constraintInput.layout().addWidget(QLabel("+"))
-<<<<<<< HEAD
-=======
         self.constraintInput.layout().addWidget(label)
->>>>>>> 755fcb1cfcf7d8ab9333ae01fe89ddde0701fe50
         self.constraintInput.layout().addWidget(line)
         self.constraintInput.layout().addWidget(label)
 

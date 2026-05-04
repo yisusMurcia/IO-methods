@@ -35,3 +35,6 @@ class Tableau:
     
     def getVariablesCoefficients(self):
         return self.__tableau[1:, -1]
+    
+    def getObjectiveFunctionValue(self):
+        return self.__tableau[0, -1]

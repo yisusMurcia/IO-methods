@@ -31,14 +31,21 @@ class SimplexStrategy(SolverStrategy):
 
     def solve(self, objectiveFunction, constraints):
         self.setData(objectiveFunction, constraints)
-        while not self.__tableau.isOptimal():
+        iterations = 0
+        while not self.__tableau.isOptimal() and iterations < 1000:  # Prevent infinite loops
             incoming = self.__tableau.getIncomingVariable()
             leaving = self.__tableau.getLeavingVariable(incoming)
             self.__cb[leaving - 1] = self.__varNames[incoming]
             self.__tableau.pivot(leaving, incoming)
-        if not self.__tableau.isOptimal():
+            iterations += 1
+        
+        coef = self.__tableau.getVariablesCoefficients()
+        if not self.__checkFasiability(coef) or iterations == 1000:
             return "No solution"
         else:
-            coef = self.__tableau.getVariablesCoefficients()
             solution = "".join(f"{self.__cb[i]} = {coef[i]} " for i in range(len(coef)))
+            solution += f"\nOptimal value: {abs(self.__tableau.getObjectiveFunctionValue())}"
             return solution
+        
+    def __checkFasiability(self, coefficients):
+        return all(coef >= 0 for coef in coefficients) and not any("a" in self.__cb[i] for i in range(len(coefficients)))
