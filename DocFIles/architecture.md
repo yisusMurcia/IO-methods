@@ -1,9 +1,12 @@
-This project follows an Layered Architecture compound by:
-- [Core](../core/):
-It contains the classes wich solve the optimization problem
-- [Model](../model/):
-This folder contains the DTO classes, it encapsulates the data used for solve the linear problem
-- [Services](../services/):
-This recive the data from the view and properly transform it for the core functionality.
-- [UI](../UI/):
-Provides the visual interface for manage the system
+# Architecture ✍️
+
+## Layers
+- Model: Fundamental classes nedded to understand and solve the lineal problems
+- Services: This classes use the model layer for solve the lineal problem
+- UI: This layer propuse a visual interface for introduce the data and visualize the optimal solution
+- Test: it is used for make unit test and integrity test
+
+## UML
+
+This project follows the next UML diagramm class:
+![UML diagramm class](./img/UMLDiagrammClass.drawio.png)
