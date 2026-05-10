@@ -5,6 +5,7 @@ from services.Adapter import Adapter
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from core.SolverStrategy import SolverStrategy
 from model.tableau import Tableau
+from UI.simplexResultView import SimplexResultView
 
 class SimplexStrategy(SolverStrategy):
     def __init__(self, tableau, isMax, varNames, cb):
@@ -40,12 +41,12 @@ class SimplexStrategy(SolverStrategy):
             iterations += 1
         
         coef = self.__tableau.getVariablesCoefficients()
-        if not self.__checkFasiability(coef) or iterations == 1000:
-            return "No solution"
-        else:
-            solution = "".join(f"{self.__cb[i]} = {coef[i]} " for i in range(len(coef)))
-            solution += f"\nOptimal value: {abs(self.__tableau.getObjectiveFunctionValue())}"
-            return solution
+        self.window = SimplexResultView(self.__varNames, self.__tableau.tableau.tolist(), self.__checkFeasibility(coef), self.__cb)
+        self.window.show()
         
-    def __checkFasiability(self, coefficients):
+    def __checkFeasibility(self, coefficients):
         return all(coef >= 0 for coef in coefficients) and not any("a" in self.__cb[i] for i in range(len(coefficients)))
+    
+    @property
+    def cb(self):
+        return self.__cb
