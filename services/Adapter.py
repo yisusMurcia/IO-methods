@@ -15,37 +15,38 @@ class Adapter:
         self.__cb = []
 
     def buildTable(self):
-        constraints = [self.__constraints[i].coefficients for i in range(len(self.__constraints))]
-        objectiveFunction = self.__objectiveFunction.coefficients
+        constraints = [self.__constraints[i].coefficients[:] for i in range(len(self.__constraints))]
+        objectiveFunction = self.__objectiveFunction.coefficients[:]
 
         for i in range(len(constraints)):
+            # Add slack or excess variable
             if self.__constraints[i].relation == "<=":
-                constraints[i].append(1)
                 for j in range(len(constraints)):
-                    if j != i:
-                        constraints[j].append(0)
+                    constraints[j].append(1 if j == i else 0)
                 self.__varNames.append(f"s{i+1}")
                 objectiveFunction.append(0)
                 self.__cb.append(f"s{i+1}")
-            else:
-                if self.__constraints[i].relation == ">=":
-                    constraints[i].append(-1)
-                    for j in range(len(constraints)):
-                        if j != i:
-                            constraints[j].append(0)
-                    self.__varNames.append(f"e{i+1}")
-                    objectiveFunction.append(0)
-
-                #Artifical variable
-                constraints[i].append(1)
+            elif self.__constraints[i].relation == ">=":
                 for j in range(len(constraints)):
-                    if j != i:
-                        constraints[j].append(0)
+                    constraints[j].append(-1 if j == i else 0)
+                self.__varNames.append(f"e{i+1}")
+                objectiveFunction.append(0)
+                
+                # Add artificial variable
+                for j in range(len(constraints)):
+                    constraints[j].append(1 if j == i else 0)
+                self.__varNames.append(f"a{i+1}")
+                objectiveFunction.append(-M if self.__objectiveFunction.isMax else M)
+                self.__cb.append(f"a{i+1}")
+            else:
+                # For "=" constraint, add artificial variable
+                for j in range(len(constraints)):
+                    constraints[j].append(1 if j == i else 0)
                 self.__varNames.append(f"a{i+1}")
                 objectiveFunction.append(-M if self.__objectiveFunction.isMax else M)
                 self.__cb.append(f"a{i+1}")
 
-        # add the values
+        # add the RHS values
         for i in range(len(constraints)):
             constraints[i].append(self.__constraints[i].value)
         objectiveFunction.append(0)

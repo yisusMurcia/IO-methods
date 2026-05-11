@@ -1,12 +1,13 @@
 import sys
 import os
+
+from UI.MainWindow import MainWindow
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from PySide6.QtWidgets import QApplication
-from UI.ProblemEntryView import ProblemEntryView
 
 
 app = QApplication([])
-window = ProblemEntryView()
+window = MainWindow()
 window.show()
 app.exec()

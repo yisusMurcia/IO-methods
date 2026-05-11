@@ -1,13 +1,21 @@
-from PySide6.QtWidgets import QMainWindow, QLabel, QMessageBox, QPushButton, QWidget, QVBoxLayout
+from __future__ import annotations
+from PySide6.QtWidgets import QLabel, QMessageBox, QPushButton, QWidget, QVBoxLayout
 from UI.ConstraitView import ConstraintView
 from UI.ObjectiveFunctionView import ObjectiveFunctionView
 from services.SolverService import SolverService
 
-class ProblemEntryView(QMainWindow):
-    def __init__(self):
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from MainWindow import MainWindow
+
+
+class ProblemEntryView(QWidget):
+    def __init__(self, mainWindow: MainWindow):
         super().__init__()
         self.__solverService: SolverService = SolverService(self)
         self.__variablesNames = ["x1"]
+        self.__mainWindow = mainWindow
         self.__ObjFuncView: ObjectiveFunctionView = ObjectiveFunctionView(self.__variablesNames)
         self.__constraintsViews: list[ConstraintView] = [ConstraintView(self.__variablesNames)]
 
@@ -24,19 +32,17 @@ class ProblemEntryView(QMainWindow):
         self.__solveButton = QPushButton("Solve")
         self.__solveButton.clicked.connect(self.solveProblem)
 
-        self.__answerBox = QMessageBox()
-
 
         central_widget = QWidget()
 
         layout = QVBoxLayout(central_widget)
+        self.setLayout(layout)
         layout.addWidget(self.__variableNamesView)
         layout.addWidget(self.__ObjFuncView)
         layout.addWidget(self.__constraintLayout)
         layout.addWidget(self.__variableNamesButton)
         layout.addWidget(self.__addConstraintButton)
         layout.addWidget(self.__solveButton)
-        self.setCentralWidget(central_widget)
 
 
         self.setWindowTitle("Problem Entry")
@@ -62,5 +68,4 @@ class ProblemEntryView(QMainWindow):
         objectiveFunction = self.__ObjFuncView.buildObjectiveFunction()
         constraints = [constraintView.buildConstraint() for constraintView in self.__constraintsViews]
         solution = self.__solverService.solve(objectiveFunction, constraints)
-        self.__answerBox.setText(solution)
-        self.__answerBox.exec()
+        self.__mainWindow.changeView(solution)

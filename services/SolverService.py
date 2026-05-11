@@ -3,6 +3,7 @@ import os
 
 from core.Simplex import SimplexStrategy
 from core.SolverStrategy import SolverStrategy
+from PySide6.QtWidgets import QWidget
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 class SolverService:
@@ -13,7 +14,7 @@ class SolverService:
     def setSolverStrategy(self, solverStrategy):
         self.__solverStrategy = solverStrategy
 
-    def solve(self, objectiveFunction, constraints):
+    def solve(self, objectiveFunction, constraints)-> QWidget:
         self.__solverStrategy.setData(objectiveFunction, constraints)
         if not self.__solverStrategy:
             raise ValueError("No solver strategy set")

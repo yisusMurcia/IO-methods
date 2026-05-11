@@ -6,6 +6,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from core.SolverStrategy import SolverStrategy
 from model.tableau import Tableau
 from UI.simplexResultView import SimplexResultView
+from PySide6.QtWidgets import QWidget
 
 class SimplexStrategy(SolverStrategy):
     def __init__(self, tableau, isMax, varNames, cb):
@@ -30,7 +31,7 @@ class SimplexStrategy(SolverStrategy):
         self.__varNames = adapter.varNames
         self.__cb = adapter.getCb()
 
-    def solve(self, objectiveFunction, constraints):
+    def solve(self, objectiveFunction, constraints)->QWidget:
         self.setData(objectiveFunction, constraints)
         iterations = 0
         while not self.__tableau.isOptimal() and iterations < 1000:  # Prevent infinite loops
@@ -42,8 +43,8 @@ class SimplexStrategy(SolverStrategy):
         
         coef = self.__tableau.getVariablesCoefficients()
         self.window = SimplexResultView(self.__varNames, self.__tableau.tableau.tolist(), self.__checkFeasibility(coef), self.__cb)
-        self.window.show()
-        
+        return self.window
+
     def __checkFeasibility(self, coefficients):
         return all(coef >= 0 for coef in coefficients) and not any("a" in self.__cb[i] for i in range(len(coefficients)))
     

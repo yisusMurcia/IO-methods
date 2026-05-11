@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QMainWindow, QLabel, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QWidget, QVBoxLayout
+from PySide6.QtWidgets import QMainWindow, QLabel, QTableWidget, QTableWidgetItem, QWidget, QVBoxLayout
 
 from UI.VarValueView import VarValueView
 
@@ -23,7 +23,6 @@ class SimplexResultView(QMainWindow):
             layout.addWidget(VarValueView("Z", abs(self.__tableau[0][-1])))
             for cb in self.__cb:
                 if "x" in cb:
-                    varIndex = int(cb[1:]) - 1
                     value = self.__tableau[self.__cb.index(cb) + 1][-1]
                     layout.addWidget(VarValueView(cb, value))
         else:
@@ -37,9 +36,13 @@ class SimplexResultView(QMainWindow):
         table.setRowCount(num_rows)
         table.setColumnCount(num_cols)
 
+        table.setEditTriggers(QTableWidget.NoEditTriggers)  # Make table read-only
+        table.verticalHeader().setVisible(False)  # Hide row numbers
+        table.horizontalHeader().setVisible(False)  # Hide column numbers
+
         # Set header row
         table.setItem(0, 0, QTableWidgetItem("CB"))
-        for col in range(1, num_cols):
+        for col in range(1, num_cols - 1):
             idx = col - 1
             if idx < len(self.__varNames):
                 item = QTableWidgetItem(self.__varNames[idx])
@@ -47,11 +50,14 @@ class SimplexResultView(QMainWindow):
                 item = QTableWidgetItem(f"S{idx - len(self.__varNames) + 1}")
             table.setItem(0, col, item)
 
+        #Last item for B
+        table.setItem(0, num_cols - 1, QTableWidgetItem("B"))
+
         # Set CB column
         table.setItem(1, 0, QTableWidgetItem("z"))
-        for i in range(1, len(self.__cb) + 1):
-            item = QTableWidgetItem(self.__cb[i - 1])
-            table.setItem(i + 1, 0, item)
+        for i in range(len(self.__cb)):
+            item = QTableWidgetItem(self.__cb[i])
+            table.setItem(i + 2, 0, item)
 
         # Set data
         for i in range(len(self.__tableau)):
