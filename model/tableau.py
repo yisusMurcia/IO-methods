@@ -2,12 +2,17 @@ import numpy as np
 class Tableau:
     def __init__(self, tableau, isMax):
         self.__tableau = np.array(tableau, dtype=float) #Last row is the objective function, the rest are the constraints
+        self.__isMax = isMax
         if not isMax:
             self.__tableau[-1, :-1] *= -1
 
     @property
     def tableau(self):
         return self.__tableau
+    
+    @property
+    def isMax(self):
+        return self.__isMax
     
     def pivot(self, row, col):
         pivot = self.__tableau[row, col]
@@ -38,3 +43,15 @@ class Tableau:
     
     def getObjectiveFunctionValue(self):
         return self.__tableau[0, -1]
+    
+    def getVariableRow(self, cbIndex):
+        return self.__tableau[cbIndex]
+    
+    def getZRow(self):
+        return self.__tableau[0]
+    
+    def getInverseMatrix(self, startIndex: int)->np.ndarray[float]:
+        return self.__tableau[:, startIndex:-1]
+    
+    def getColumn(self, colIndex):
+        return self.__tableau[:, colIndex]
