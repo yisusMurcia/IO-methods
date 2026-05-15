@@ -4,12 +4,14 @@ from PySide6.QtWidgets import QMainWindow, QLabel, QPushButton, QTableWidget, QT
 
 from UI.SimplexSensitiveAnalysisVew import SimplexSensitiveAnalysisView
 from UI.VarValueView import VarValueView
+from model.tableau import Tableau
 
 class SimplexResultView(QMainWindow):
-    def __init__(self, varNames: list[str], tableau: list[list[float]], isFeasiable: bool, cb: list[str]):
+    def __init__(self, varNames: list[str], tableau: Tableau, isFeasiable: bool, cb: list[str]):
         super().__init__()
         self.__varNames = varNames
         self.__tableau = tableau
+        self.__tableauList = tableau.tableau.tolist()
         self.__cb = cb
         self.__sensitivityAnalysisBtn = QPushButton("Sensitivity Analysis")
 
@@ -24,10 +26,10 @@ class SimplexResultView(QMainWindow):
         layout.addWidget(self.createTable())
 
         if isFeasiable:
-            layout.addWidget(VarValueView("Z", abs(self.__tableau[0][-1])))
+            layout.addWidget(VarValueView("Z", abs(self.__tableauList[0][-1])))
             for cb in self.__cb:
                 if "x" in cb:
-                    value = self.__tableau[self.__cb.index(cb) + 1][-1]
+                    value = self.__tableauList[self.__cb.index(cb) + 1][-1]
                     layout.addWidget(VarValueView(cb, value))
             layout.addWidget(self.__sensitivityAnalysisBtn)
             self.__sensitivityAnalysisBtn.clicked.connect(lambda: self.operateSensitivityAnalysis(layout))
@@ -36,8 +38,8 @@ class SimplexResultView(QMainWindow):
 
 
     def createTable(self)-> QTableWidget:
-        num_rows = len(self.__tableau) + 1  # +1 for header
-        num_cols = len(self.__tableau[0]) + 1  # +1 for CB column
+        num_rows = len(self.__tableauList) + 1  # +1 for header
+        num_cols = len(self.__tableauList[0]) + 1  # +1 for CB column
         table = QTableWidget(num_rows, num_cols)
         table.setRowCount(num_rows)
         table.setColumnCount(num_cols)
@@ -66,9 +68,9 @@ class SimplexResultView(QMainWindow):
             table.setItem(i + 2, 0, item)
 
         # Set data
-        for i in range(len(self.__tableau)):
-            for j in range(len(self.__tableau[0])):
-                item = QTableWidgetItem(self.adjustValue(self.__tableau[i][j]))
+        for i in range(len(self.__tableauList)):
+            for j in range(len(self.__tableauList[0])):
+                item = QTableWidgetItem(self.adjustValue(self.__tableauList[i][j]))
                 table.setItem(i + 1, j + 1, item)
 
         return table

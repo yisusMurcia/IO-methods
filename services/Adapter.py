@@ -26,20 +26,14 @@ class Adapter:
                 self.__varNames.append(f"s{i+1}")
                 objectiveFunction.append(0)
                 self.__cb.append(f"s{i+1}")
-            elif self.__constraints[i].relation == ">=":
-                for j in range(len(constraints)):
-                    constraints[j].append(-1 if j == i else 0)
-                self.__varNames.append(f"e{i+1}")
-                objectiveFunction.append(0)
+            else:
+                if self.__constraints[i].relation == ">=":
+                    for j in range(len(constraints)):
+                        constraints[j].append(-1 if j == i else 0)
+                    self.__varNames.append(f"e{i+1}")
+                    objectiveFunction.append(0)
                 
                 # Add artificial variable
-                for j in range(len(constraints)):
-                    constraints[j].append(1 if j == i else 0)
-                self.__varNames.append(f"a{i+1}")
-                objectiveFunction.append(-M if self.__objectiveFunction.isMax else M)
-                self.__cb.append(f"a{i+1}")
-            else:
-                # For "=" constraint, add artificial variable
                 for j in range(len(constraints)):
                     constraints[j].append(1 if j == i else 0)
                 self.__varNames.append(f"a{i+1}")

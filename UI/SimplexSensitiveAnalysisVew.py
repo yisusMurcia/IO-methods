@@ -24,7 +24,7 @@ class SimplexSensitiveAnalysisView(QWidget):
         for i in range(len(cb)):
             constraintWidget = QWidget()
             constraintWidget.setLayout(QHBoxLayout())
-            constraintWidget.layout().addWidget(QLabel(f"New Resource Coefficient for {varNames[cb[i]]}:"))
+            constraintWidget.layout().addWidget(QLabel(f"New Resource for B{i}:"))
             constraintInput = QLineEdit()
             constraintInput.setValidator(QDoubleValidator())
             constraintWidget.layout().addWidget(constraintInput)
@@ -45,7 +45,9 @@ class SimplexSensitiveAnalysisView(QWidget):
         self.__analyzeNewResourceBtn.clicked.connect(self.analyzeNewResource)
         self.layout.addWidget(self.__varsAnalysis)
         self.layout.addWidget(self.__resourcesAnalysis)
+        self.__newResourceZValue.layout().addWidget(self.__newResourceZValueInput)
         self.layout.addWidget(self.__analyzeNewResourceBtn)
+        self.layout.addWidget(self.__newResourceWidget)
 
     def analyzeNewResource(self):
         resourceData = [float(self.__newResourceZValueInput.text())]

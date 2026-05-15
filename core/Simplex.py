@@ -26,7 +26,6 @@ class SimplexStrategy(SolverStrategy):
 
     def setData(self, ObjectiveFunction, constraints):
         adapter = Adapter(ObjectiveFunction, constraints)
-        adapter.buildTable()
         self.__tableau = adapter.getTableau()
         self.__varNames = adapter.varNames
         self.__cb = adapter.getCb()
@@ -42,7 +41,7 @@ class SimplexStrategy(SolverStrategy):
             iterations += 1
         
         coef = self.__tableau.getVariablesCoefficients()
-        self.window = SimplexResultView(self.__varNames, self.__tableau.tableau.tolist(), self.__checkFeasibility(coef), self.__cb)
+        self.window = SimplexResultView(self.__varNames, self.__tableau, self.__checkFeasibility(coef), self.__cb)
         return self.window
 
     def __checkFeasibility(self, coefficients):
