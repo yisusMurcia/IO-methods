@@ -51,7 +51,7 @@ class Tableau:
         return self.__tableau[0]
     
     def getInverseMatrix(self, startIndex: int)->np.ndarray[float]:
-        return self.__tableau[:, startIndex + 1:-1]
+        return self.__tableau[:, startIndex:-1]
     
     def getColumn(self, colIndex):
         return self.__tableau[:, colIndex]

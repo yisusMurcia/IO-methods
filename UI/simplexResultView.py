@@ -22,7 +22,7 @@ class SimplexResultView(QMainWindow):
         self.resize(400, 300)
 
         layout.addWidget(self.createTable())
-    
+
         if isFeasiable:
             layout.addWidget(VarValueView("Z", abs(self.__tableau[0][-1])))
             for cb in self.__cb:

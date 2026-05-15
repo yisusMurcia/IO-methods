@@ -7,7 +7,7 @@ from core.SimlexSensitivilityAnalyzer import SimlexSensitivilityAnalyzer
 from model.tableau import Tableau
 
 class SimplexSensitiveAnalysisView(QWidget):
-    def __init__(self, tableau: Tableau, varNames: list[str], cb: list[int]):
+    def __init__(self, tableau: Tableau, varNames: list[str], cb: list[str]):
         super().__init__()
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
@@ -39,13 +39,11 @@ class SimplexSensitiveAnalysisView(QWidget):
         self.__newResourceWidget.layout().addWidget(self.__newResourceAnalysis)
 
         self.__analyzer = SimlexSensitivilityAnalyzer(tableau, varNames, cb)
-        self.__basicVarsAnalysis = QLabel(self.__analyzer.analyzeBasicVars())
-        self.__nonBasicVarsAnalysis = QLabel(self.__analyzer.analyzeNonBasicVars())
+        self.__varsAnalysis = QLabel(self.__analyzer.analyzeVars())
         self.__resourcesAnalysis = QLabel(self.__analyzer.analyzeResources())
         self.__analyzeNewResourceBtn = QPushButton("Analyze New Resource")
         self.__analyzeNewResourceBtn.clicked.connect(self.analyzeNewResource)
-        self.layout.addWidget(self.__basicVarsAnalysis)
-        self.layout.addWidget(self.__nonBasicVarsAnalysis)
+        self.layout.addWidget(self.__varsAnalysis)
         self.layout.addWidget(self.__resourcesAnalysis)
         self.layout.addWidget(self.__analyzeNewResourceBtn)
 
