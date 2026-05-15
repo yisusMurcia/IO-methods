@@ -1,5 +1,8 @@
-from PySide6.QtWidgets import QMainWindow, QLabel, QTableWidget, QTableWidgetItem, QWidget, QVBoxLayout
+from hashlib import new
 
+from PySide6.QtWidgets import QMainWindow, QLabel, QPushButton, QTableWidget, QTableWidgetItem, QWidget, QVBoxLayout
+
+from UI.SimplexSensitiveAnalysisVew import SimplexSensitiveAnalysisView
 from UI.VarValueView import VarValueView
 
 class SimplexResultView(QMainWindow):
@@ -8,6 +11,7 @@ class SimplexResultView(QMainWindow):
         self.__varNames = varNames
         self.__tableau = tableau
         self.__cb = cb
+        self.__sensitivityAnalysisBtn = QPushButton("Sensitivity Analysis")
 
         layout = QVBoxLayout()
         central_widget = QWidget()
@@ -18,13 +22,15 @@ class SimplexResultView(QMainWindow):
         self.resize(400, 300)
 
         layout.addWidget(self.createTable())
-
+    
         if isFeasiable:
             layout.addWidget(VarValueView("Z", abs(self.__tableau[0][-1])))
             for cb in self.__cb:
                 if "x" in cb:
                     value = self.__tableau[self.__cb.index(cb) + 1][-1]
                     layout.addWidget(VarValueView(cb, value))
+            layout.addWidget(self.__sensitivityAnalysisBtn)
+            self.__sensitivityAnalysisBtn.clicked.connect(lambda: self.operateSensitivityAnalysis(layout))
         else:
             layout.addWidget(QLabel("No feasible solution"))
 
@@ -72,3 +78,8 @@ class SimplexResultView(QMainWindow):
             return str(int(value))
         else:
             return str(value)
+        
+    def operateSensitivityAnalysis(self, layout: QVBoxLayout):
+        analysisView = SimplexSensitiveAnalysisView(self.__tableau, self.__varNames, self.__cb)
+        layout.addWidget(analysisView)
+        self.__sensitivityAnalysisBtn.setEnabled(False)

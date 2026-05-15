@@ -39,10 +39,15 @@ class SimlexSensitivilityAnalyzer:
         return analysis
     
     def analyzeNewResource(self, resourceData: list[float])->bool: #ResourceData [z, coinstraint coefficients...]
-        inverseMatrix = self.__tableau.getInverseMatrix(0)
-        zInInverseMatrix =  inverseMatrix[0]
+        startIndex = 0
+        for i in range(len(self.__varNames)):
+            if not self.__varNames[i].startswith("x"):
+                startIndex = i
+                break
+        inverseMatrix = self.__tableau.getInverseMatrix(startIndex)
+        zInInverseMatrix: np.ndarray[float] =  inverseMatrix[0]
         zVal =  resourceData[0] + zInInverseMatrix.dot(resourceData[1:])
-        return zVal > 0
+        return zVal <= 0
 
     def __analizeBasicVar(self, varIndex)->str:
         varName = self.__varNames[varIndex]
