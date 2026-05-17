@@ -1,5 +1,3 @@
-from hashlib import new
-
 from PySide6.QtWidgets import QMainWindow, QLabel, QPushButton, QTableWidget, QTableWidgetItem, QWidget, QVBoxLayout
 
 from UI.SimplexSensitiveAnalysisVew import SimplexSensitiveAnalysisView

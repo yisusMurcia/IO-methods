@@ -6,6 +6,7 @@ from core.SolverStrategy import SolverStrategy
 from model.Constraint import Constraint
 from model.ObjectiveFunction import ObjectiveFunction
 from PySide6.QtWidgets import QWidget
+from UI.GraphicView import GraphicView
 import numpy as np
 
 class GraphicalMethodSolver(SolverStrategy):
@@ -28,7 +29,7 @@ class GraphicalMethodSolver(SolverStrategy):
             if maxValue is None or (self.__objectiveFunction.isMax and value > maxValue) or (not self.__objectiveFunction.isMax and value < maxValue):
                 maxValue = value
                 optimalPoint = intersection
-        return optimalPoint.tolist() if optimalPoint is not None else None
+        return GraphicView(self.__constraints, optimalPoint.tolist() if optimalPoint is not None else None, maxValue)
 
     def __buildIntersections(self)-> list[np.ndarray]:
         intersections = []
