@@ -9,11 +9,11 @@ from model.ObjectiveFunction import ObjectiveFunction
 
 
 def display_graphical_solution():
-    objective = ObjectiveFunction([3, 2], True)
+    objective = ObjectiveFunction([500, 300], True)
     constraints = [
-        Constraint([1, 1], '<=', 4),
-        Constraint([1, 0], '>=', 0),
-        Constraint([0, 1], '>=', 0)
+        Constraint([2.5, 1.2], '<=', 10),
+        Constraint([-2.5, 1], '<=', 0),
+        Constraint([1, 0], '<=', 1)
     ]
 
     app = QApplication(sys.argv)

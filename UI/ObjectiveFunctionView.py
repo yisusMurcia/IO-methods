@@ -4,6 +4,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from model.ObjectiveFunction import ObjectiveFunction
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout,  QLabel, QLineEdit, QComboBox
 from PySide6.QtGui import QDoubleValidator
+from PySide6.QtCore import QLocale
 
 class ObjectiveFunctionView(QWidget):
     def __init__(self, variableNames):
@@ -11,6 +12,9 @@ class ObjectiveFunctionView(QWidget):
         self.__variableNames = []
         self.__LineEdits = []
         self.__validator = QDoubleValidator()
+        localizacion = QLocale(QLocale.Language.English, QLocale.Country.UnitedStates)
+        self.__validator.setLocale(localizacion)
+        self.__validator.setNotation(QDoubleValidator.Notation.StandardNotation)
         
 
         self.layout = QVBoxLayout()

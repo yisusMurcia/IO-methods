@@ -22,6 +22,7 @@ class GraphicalMethodSolver(SolverStrategy):
         self.__objectiveFunction = objectiveFunction
         self.__constraints = constraints
         fasiableIntersections = [intersection for intersection in self.__buildIntersections() if self.__evaluateFasiabilityIntersection(intersection)]
+        print(fasiableIntersections)
         maxValue = None
         optimalPoint = None
         for intersection in fasiableIntersections:
@@ -45,7 +46,10 @@ class GraphicalMethodSolver(SolverStrategy):
         b = np.array([constraint1.value, constraint2.value])
         try:
             solution = np.linalg.solve(A, b)
-            return solution
+            if np.all(solution >= -self.epsilon):  # Check if the solution is in the first quadrant (non-negative)
+                return solution
+            else:
+                return None
         except np.linalg.LinAlgError:
             return None
 

@@ -4,6 +4,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from model.Constraint import Constraint
 from PySide6.QtWidgets import QWidget, QHBoxLayout,  QLabel, QLineEdit, QComboBox
 from PySide6.QtGui import QDoubleValidator
+from PySide6.QtCore import QLocale
 
 class ConstraintView(QWidget):
     def __init__(self, variableNames):
@@ -16,6 +17,10 @@ class ConstraintView(QWidget):
         self.__limitValueEdit.setPlaceholderText("Value")
         self.__limitValueEdit.setValidator(self.__validator)
         
+        localizacion = QLocale(QLocale.Language.English, QLocale.Country.UnitedStates)
+        self.__validator.setLocale(localizacion)
+        self.__validator.setNotation(QDoubleValidator.Notation.StandardNotation)
+
 
         self.layout = QHBoxLayout()
         self.setLayout(self.layout)

@@ -41,9 +41,9 @@ class GraphView(QWidget):
                 x = constraint.value / constraint.coefficients[0]
                 ax.axvline(x=x, label=f"{constraint.coefficients[0]}x {constraint.relation} {constraint.value}")
                 if (constraint.relation == "<=" and constraint.coefficients[0] > 0) or (constraint.relation == ">=" and constraint.coefficients[0] < 0):
-                    ax.fill_betweenx(np.linspace(0, yMax, 100), x, x2=xMax, alpha=0.3)
+                    ax.fill_betweenx(np.linspace(0, 0, 100), x, x2=xMax, alpha=0.3)
                 elif (constraint.relation == "<=" and constraint.coefficients[0] < 0) or (constraint.relation == ">=" and constraint.coefficients[0] > 0):
-                    ax.fill_betweenx(np.linspace(0, 0, 100), x, x2=0, alpha=0.3)
+                    ax.fill_betweenx(np.linspace(0, yMax, 100), x, x2=0, alpha=0.3)
         ax.legend()
         self.__graphCanva.draw()
 

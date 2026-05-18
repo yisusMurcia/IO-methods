@@ -8,7 +8,7 @@ class GraphicView(QMainWindow):
         self.__constraints = constraints
         self.__optimalVarsValues = optimalPoint
         self.__optimalVal = optimalValue
-        valueView = QLabel(f"Optimal Value: {self.__optimalVal} with x1 {self.__optimalVarsValues[0]} and x2 {self.__optimalVarsValues[1]}") if self.__optimalVal is not None else QLabel("No optimal value")
+        valueView = QLabel(f"Optimal Value: {self.__optimalVal} \n with x1 {self.__optimalVarsValues[0]} and x2 {self.__optimalVarsValues[1]}") if self.__optimalVal is not None else QLabel("No optimal value")
         layout = QVBoxLayout()
         if self.__optimalVal is not None and len(self.__optimalVarsValues) == 2:
             graphView = GraphView(self.__constraints)
