@@ -1,5 +1,9 @@
 # Changelog 📃
 
+## V1.3.0 - 2026-05-20
+### Added
+Sensibility analysis for graphical method
+
 ## V1.2.0 - 2026-05-18
 ### Added
 - Graphic method strategy

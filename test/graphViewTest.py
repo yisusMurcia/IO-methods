@@ -11,18 +11,19 @@ from PySide6.QtWidgets import QApplication
 def test_graph_view_display():
     """Test GraphView with sample constraints and display the widget"""
     
-    # Create sample constraints for a linear programming problem
-    # Example: 2x + 3y <= 12
-    constraint1 = Constraint([2, 3], "<=", 12)
-    
-    # Example: x - y <= 5
-    constraint2 = Constraint([1, -1], ">=", 5)
-    
-    # Example: 3x + y <= 10
-    constraint3 = Constraint([3, 0], "<=", 10)
-    
+    # Create sample constraints for the tables-and-chairs maximization problem
+    # Materials used per unit:
+    #   Table  (x1): 1 m^2 wood, 2.5 m pipe, 2 hr labor, 0 kg foam
+    #   Chair  (x2): 0.25 m^2 wood, 4 m pipe, 1.5 hr labor, 0.2 kg foam
+    # Available resources:
+    #   wood 160, pipe 800, labor 360, foam 50
+    constraint1 = Constraint([1, 0.25], "<=", 160)
+    constraint2 = Constraint([2.5, 4], "<=", 800)
+    constraint3 = Constraint([2, 1.5], "<=", 360)
+    constraint4 = Constraint([0, 0.2], "<=", 50)
+
     # Create list of constraints
-    constraints = [constraint1, constraint2, constraint3]
+    constraints = [constraint1, constraint2, constraint3, constraint4]
     
     # Initialize QApplication
     app = QApplication(sys.argv)

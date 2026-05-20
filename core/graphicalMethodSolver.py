@@ -22,7 +22,6 @@ class GraphicalMethodSolver(SolverStrategy):
         self.__objectiveFunction = objectiveFunction
         self.__constraints = constraints
         fasiableIntersections = [intersection for intersection in self.__buildIntersections() if self.__evaluateFasiabilityIntersection(intersection)]
-        print(fasiableIntersections)
         maxValue = None
         optimalPoint = None
         for intersection in fasiableIntersections:
@@ -30,7 +29,7 @@ class GraphicalMethodSolver(SolverStrategy):
             if maxValue is None or (self.__objectiveFunction.isMax and value > maxValue) or (not self.__objectiveFunction.isMax and value < maxValue):
                 maxValue = value
                 optimalPoint = intersection
-        return GraphicView(self.__constraints, optimalPoint.tolist() if optimalPoint is not None else None, maxValue)
+        return GraphicView(self.__constraints, objectiveFunction, optimalPoint.tolist() if optimalPoint is not None else None, maxValue)
 
     def __buildIntersections(self)-> list[np.ndarray]:
         intersections = []
