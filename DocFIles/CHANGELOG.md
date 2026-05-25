@@ -1,5 +1,10 @@
 # Changelog 📃
 
+## V1.3.1 - 2026-05-20
+
+### Added
+A back button for results views
+
 ## V1.3.0 - 2026-05-20
 ### Added
 Sensibility analysis for graphical method
