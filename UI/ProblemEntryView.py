@@ -43,9 +43,12 @@ class ProblemEntryView(QWidget):
         self.__solveButton = QPushButton("Solve")
         self.__solveButton.clicked.connect(self.solveProblem)
 
+        self.__cleanProblemButton = QPushButton("Clean problem")
+        self.__cleanProblemButton.clicked.connect(self.cleanProblem)
         self.__solveWidget = QWidget()
         self.__solveWidget.setLayout(QHBoxLayout())
         self.__solveWidget.layout().addWidget(self.__strategySelection)
+        self.__solveWidget.layout().addWidget(self.__cleanProblemButton)
         self.__solveWidget.layout().addWidget(self.__solveButton)
 
 
@@ -94,3 +97,18 @@ class ProblemEntryView(QWidget):
             self.__solverService.setSolverStrategy(GraphicalMethodSolver())
         elif strategy == "Simplex Method (Big M)":
             self.__solverService.setSolverStrategy(SimplexStrategy())
+
+    def cleanProblem(self):
+        self.__variablesNames = ["x1"]
+        self.__ObjFuncView.cleanAll()
+        self.__ObjFuncView.addVariable("x1")
+        while self.__constraintLayout.layout().count() > 0:
+            item = self.__constraintLayout.layout().itemAt(0)
+            widget = item.widget()
+            if widget is not None:
+                widget.setParent(None)
+                widget.deleteLater()
+            else:
+                self.__constraintLayout.layout().removeItem(item)
+        self.addConstraint()
+        self.updateVariableNamesView()

@@ -1,3 +1,7 @@
+import sys
+import os
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from PySide6.QtWidgets import QMainWindow, QStackedWidget, QWidget
 from UI.ProblemEntryView import ProblemEntryView
 
@@ -24,3 +28,4 @@ class MainWindow(QMainWindow):
 
     def changeViewToProblemEntry(self):
         self.stack.setCurrentWidget(self.problemEntryView)
+        self.stack.removeWidget(self.stack.currentWidget())
