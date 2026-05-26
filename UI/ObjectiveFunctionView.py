@@ -55,3 +55,13 @@ class ObjectiveFunctionView(QWidget):
                 coefficients.append(float(text))
         isMaximize = self.maxMinComboBox.currentText() == "Maximize"
         return ObjectiveFunction(coefficients, isMaximize)
+    
+    def cleanAll(self):
+        while self.objectiveInput.layout().count() > 0:
+            item = self.objectiveInput.layout().itemAt(0)
+            widget = item.widget()
+            if widget is not None:
+                widget.setParent(None)
+                widget.deleteLater()
+            else:
+                self.objectiveInput.layout().removeItem(item)

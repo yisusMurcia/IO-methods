@@ -1,5 +1,14 @@
 # Changelog 📃
 
+## V1.3.2 - 2026-05-21
+### Added
+A clean all button to restore the entry problem view for a new problem
+
+## V1.3.1 - 2026-05-20
+
+### Added
+A back button for results views
+
 ## V1.3.0 - 2026-05-20
 ### Added
 Sensibility analysis for graphical method
