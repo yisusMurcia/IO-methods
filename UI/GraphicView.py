@@ -12,8 +12,10 @@ class GraphicView(QMainWindow):
         self.__optimalVal = optimalValue
         self.__objectiveFunction = objectiveFunction
         self.__analysisBtn = QPushButton("Sensibility analysis")
+        self.closeButton = QPushButton("<")
         valueView = QLabel(f"Optimal Value: {self.__optimalVal} \n with x1 {self.__optimalVarsValues[0]} and x2 {self.__optimalVarsValues[1]}") if self.__optimalVal is not None else QLabel("No optimal value")
         layout = QVBoxLayout()
+        layout.addWidget(self.closeButton)
         if self.__optimalVal is not None and len(self.__optimalVarsValues) == 2:
             graphView = GraphView(self.__constraints)
             layout.addWidget(graphView)

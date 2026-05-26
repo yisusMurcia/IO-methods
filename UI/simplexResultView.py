@@ -12,6 +12,8 @@ class SimplexResultView(QMainWindow):
         self.__tableauList = tableau.tableau.tolist()
         self.__cb = cb
         self.__sensitivityAnalysisBtn = QPushButton("Sensitivity Analysis")
+        self.closeButton = QPushButton("<")
+
 
         layout = QVBoxLayout()
         central_widget = QWidget()
@@ -21,6 +23,7 @@ class SimplexResultView(QMainWindow):
         self.setWindowTitle("Simplex Result")
         self.resize(400, 300)
 
+        layout.addWidget(self.closeButton)
         layout.addWidget(self.createTable())
 
         if isFeasiable:

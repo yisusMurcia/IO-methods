@@ -86,6 +86,7 @@ class ProblemEntryView(QWidget):
         objectiveFunction = self.__ObjFuncView.buildObjectiveFunction()
         constraints = [constraintView.buildConstraint() for constraintView in self.__constraintsViews]
         solution = self.__solverService.solve(objectiveFunction, constraints)
+        solution.closeButton.clicked.connect(lambda: self.__mainWindow.changeViewToProblemEntry())
         self.__mainWindow.changeView(solution)
 
     def defineStrategy(self, strategy: str):

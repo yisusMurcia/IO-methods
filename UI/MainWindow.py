@@ -15,10 +15,12 @@ class MainWindow(QMainWindow):
         self.resize(600, 400)
 
     def openProblemEntryView(self):
-        from UI.ProblemEntryView import ProblemEntryView
         self.problem_entry_view = ProblemEntryView(self)
         self.problem_entry_view.show()
 
     def changeView(self, view: QWidget):
         self.stack.addWidget(view)
         self.stack.setCurrentWidget(view)
+
+    def changeViewToProblemEntry(self):
+        self.stack.setCurrentWidget(self.problemEntryView)
