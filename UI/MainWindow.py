@@ -27,5 +27,5 @@ class MainWindow(QMainWindow):
         self.stack.setCurrentWidget(view)
 
     def changeViewToProblemEntry(self):
-        self.stack.setCurrentWidget(self.problemEntryView)
         self.stack.removeWidget(self.stack.currentWidget())
+        self.stack.setCurrentWidget(self.problemEntryView)

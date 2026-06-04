@@ -7,7 +7,8 @@ import numpy as np
 class SimlexSensitivilityAnalyzer:
     def __init__(self, tableau: Tableau, varNames: list[str], cb: list[str]):
         self.__tableau: Tableau = tableau
-        self.__varNames: list[str] = varNames
+        self.__tableau.deleteArtificialVars(varNames)
+        self.__varNames: list[str] = [var for var in varNames if not var.startswith("a")]
         self.__cb: list[str] = cb
 
     def analyzeVars(self)->str:
@@ -18,7 +19,7 @@ class SimlexSensitivilityAnalyzer:
             if i in self.__cb:
                 analysis += self.__analyzeBasicVar(self.__cb.index(i)) + "\n"
             else:
-                analysis += self.__analyzeNonBasicVar(i) + "\n"
+                analysis += self.__analyzeNonBasicVar(self.__varNames.index(i)) + "\n"
         return analysis
     
     def analyzeResources(self)->str:

@@ -1,5 +1,13 @@
 # Changelog 📃
 
+## V 1.3.3 - 2026-06-04
+Fixed:
+- Empty window when use the back button
+    - Deleting wrong view when using this function
+- Sensitivility analizer doesn´t working in big M method
+    - The inverse matrix has the artificial variables, causing an imposible matrix multiplication, the sizes didn´t match.
+    - Using the varname as a index position
+
 ## V1.3.2 - 2026-05-21
 ### Added
 A clean all button to restore the entry problem view for a new problem

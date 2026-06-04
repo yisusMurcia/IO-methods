@@ -55,3 +55,7 @@ class Tableau:
     
     def getColumn(self, colIndex):
         return self.__tableau[:, colIndex]
+
+    def deleteArtificialVars(self, varNames: list[str]):
+        artificialVarIndices = [i for i, name in enumerate(varNames) if name.startswith("a")]
+        self.__tableau = np.delete(self.__tableau, artificialVarIndices, axis=1)
