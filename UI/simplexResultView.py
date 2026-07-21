@@ -3,6 +3,7 @@ from PySide6.QtWidgets import QMainWindow, QLabel, QPushButton, QTableWidget, QT
 from UI.SimplexSensitiveAnalysisVew import SimplexSensitiveAnalysisView
 from UI.VarValueView import VarValueView
 from model.tableau import Tableau
+from model.M import M
 
 class SimplexResultView(QMainWindow):
     def __init__(self, varNames: list[str], tableau: Tableau, isFeasiable: bool, cb: list[str]):
@@ -77,6 +78,8 @@ class SimplexResultView(QMainWindow):
         return table
     
     def adjustValue(self, value) -> str:
+        if isinstance(value, M):
+            return "-" if value.x < 0 else "" + "∞"
         if value == int(value):
             return str(int(value))
         else:

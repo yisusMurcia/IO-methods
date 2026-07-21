@@ -1,7 +1,7 @@
 import numpy as np
 class Tableau:
     def __init__(self, tableau, isMax):
-        self.__tableau = np.array(tableau, dtype=float) #Last row is the objective function, the rest are the constraints
+        self.__tableau = np.array(tableau) #Last row is the objective function, the rest are the constraints
         self.__isMax = isMax
         if not isMax:
             self.__tableau[-1, :-1] *= -1

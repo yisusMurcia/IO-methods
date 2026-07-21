@@ -4,8 +4,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from model.Constraint import Constraint
 from model.ObjectiveFunction import ObjectiveFunction
 from model.tableau import Tableau
-
-M = 1e6
+from model.M import M
 
 class Adapter:
     def __init__(self, objectiveFunction, constraints):
@@ -37,7 +36,7 @@ class Adapter:
                 for j in range(len(constraints)):
                     constraints[j].append(1 if j == i else 0)
                 self.__varNames.append(f"a{i+1}")
-                objectiveFunction.append(-M if self.__objectiveFunction.isMax else M)
+                objectiveFunction.append(-M() if self.__objectiveFunction.isMax else M())
                 self.__cb.append(f"a{i+1}")
 
         # add the RHS values
