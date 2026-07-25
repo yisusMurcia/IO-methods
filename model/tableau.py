@@ -1,10 +1,10 @@
 import numpy as np
 class Tableau:
     def __init__(self, tableau, isMax):
-        self.__tableau = np.array(tableau, dtype=float) #Last row is the objective function, the rest are the constraints
+        self.__tableau = np.array(tableau, dtype=float) #First row is the objective function, the rest are the constraints
         self.__isMax = isMax
         if not isMax:
-            self.__tableau[-1, :-1] *= -1
+            self.__tableau[0, :-1] *= -1
 
     @property
     def tableau(self):
@@ -50,7 +50,7 @@ class Tableau:
     def getZRow(self):
         return self.__tableau[0]
     
-    def getInverseMatrix(self, startIndex: int)->np.ndarray[float]:
+    def getInverseMatrix(self, startIndex: int):
         return self.__tableau[:, startIndex:-1]
     
     def getColumn(self, colIndex):

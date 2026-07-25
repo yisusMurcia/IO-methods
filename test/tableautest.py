@@ -29,11 +29,22 @@ class TestTableau(unittest.TestCase):
 
     def test_init_min(self):
         expected = np.array(self.min_tableau, dtype=float)
-        expected[-1, :-1] *= -1  # negate objective
+        expected[0, :-1] *= -1  # negate objective
         np.testing.assert_array_equal(self.tableau_min.tableau, expected)
 
     def test_get_incoming_variable_max(self):
         self.assertEqual(self.tableau_max.getIncomingVariable(), 0)
+
+    def test_minimization_tableau_negates_objective_row(self):
+        min_tableau = [
+            [4, 3, 0, 0],
+            [1, 1, 1, 1]
+        ]
+        tableau_min = Tableau(min_tableau, False)
+
+        expected = np.array(min_tableau, dtype=float)
+        expected[0, :-1] *= -1
+        np.testing.assert_array_equal(tableau_min.tableau, expected)
 
     def test_get_leaving_variable(self):
         incoming = self.tableau_max.getIncomingVariable()

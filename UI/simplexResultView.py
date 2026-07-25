@@ -1,18 +1,23 @@
-from PySide6.QtWidgets import QMainWindow, QLabel, QPushButton, QTableWidget, QTableWidgetItem, QWidget, QVBoxLayout
+from PySide6.QtWidgets import QMainWindow, QLabel, QPushButton, QTableWidget, QTableWidgetItem, QWidget, QVBoxLayout, QScrollArea
 
 from UI.SimplexSensitiveAnalysisVew import SimplexSensitiveAnalysisView
 from UI.VarValueView import VarValueView
+from model.TableauCaretaker import TableauCaretaker
 from model.tableau import Tableau
 
 class SimplexResultView(QMainWindow):
-    def __init__(self, varNames: list[str], tableau: Tableau, isFeasiable: bool, cb: list[str]):
+    def __init__(self, varNames: list[str], careTaker: TableauCaretaker, isFeasiable: bool, cbList: list[str]):
         super().__init__()
         self.__varNames = varNames
-        self.__tableau = tableau
-        self.__tableauList = tableau.tableau.tolist()
-        self.__cb = cb
+        self.__tableau = careTaker.mementos[0]
+        self.__tableauList = self.__tableau.tableau.tolist()
+        self.__cb = cbList
         self.__sensitivityAnalysisBtn = QPushButton("Sensitivity Analysis")
         self.closeButton = QPushButton("<")
+
+        self.__tableContainter = QWidget()
+        self.__table_layout = QVBoxLayout(self.__tableContainter)
+        self.__scroll_table_view = QScrollArea()
 
 
         layout = QVBoxLayout()
@@ -24,7 +29,14 @@ class SimplexResultView(QMainWindow):
         self.resize(400, 300)
 
         layout.addWidget(self.closeButton)
-        layout.addWidget(self.createTable())
+        for table in careTaker.mementos:
+            self.__table_layout.addWidget(self.createTable(table))
+
+        self.__scroll_table_view.setWidget(self.__tableContainter)
+
+        layout.addWidget(self.__scroll_table_view)
+
+
 
         if isFeasiable:
             layout.addWidget(VarValueView("Z", abs(self.__tableauList[0][-1])))
@@ -38,9 +50,11 @@ class SimplexResultView(QMainWindow):
             layout.addWidget(QLabel("No feasible solution"))
 
 
-    def createTable(self)-> QTableWidget:
-        num_rows = len(self.__tableauList) + 1  # +1 for header
-        num_cols = len(self.__tableauList[0]) + 1  # +1 for CB column
+    def createTable(self, tableau: Tableau)-> QTableWidget:
+        tableauList = tableau.tableau.tolist()
+
+        num_rows = len(tableauList) + 1  # +1 for header
+        num_cols = len(tableauList[0]) + 1  # +1 for CB column
         table = QTableWidget(num_rows, num_cols)
         table.setRowCount(num_rows)
         table.setColumnCount(num_cols)
