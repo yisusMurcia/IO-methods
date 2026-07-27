@@ -10,10 +10,6 @@ from UI.GraphicView import GraphicView
 import numpy as np
 
 class GraphicalMethodSolver(SolverStrategy):
-    def __init__(self, objectiveFunction: ObjectiveFunction, constraints: list[Constraint]):
-        self.__objectiveFunction = objectiveFunction
-        self.__constraints = constraints
-        self.epsilon = 1e-6
 
     def __init__(self, epsilon: float = 1e-6):
         self.epsilon = epsilon
@@ -22,25 +18,28 @@ class GraphicalMethodSolver(SolverStrategy):
         self.__objectiveFunction = objectiveFunction
         self.__constraints = constraints
         fasiableIntersections = [intersection for intersection in self.__buildIntersections() if self.__evaluateFasiabilityIntersection(intersection)]
-        maxValue = None
+        maxValue = 0
         optimalPoint = None
         for intersection in fasiableIntersections:
             value = self.__evaluateInZ(intersection)
-            if maxValue is None or (self.__objectiveFunction.isMax and value > maxValue) or (not self.__objectiveFunction.isMax and value < maxValue):
+            if maxValue is 0 or (self.__objectiveFunction.isMax and value > maxValue) or (not self.__objectiveFunction.isMax and value < maxValue):
                 maxValue = value
                 optimalPoint = intersection
-        return GraphicView(self.__constraints, objectiveFunction, optimalPoint.tolist() if optimalPoint is not None else None, maxValue)
+        return GraphicView(self.__constraints, objectiveFunction, optimalPoint.tolist() if optimalPoint is not None else [], maxValue)
 
     def __buildIntersections(self)-> list[np.ndarray]:
         intersections = []
         for i in range(len(self.__constraints)):
+            #Append plane intersections
+            for val in self.__constraints[i].coefficients:
+                intersections.append(np.array([self.__constraints[i].value if val == coef else 0 for coef in self.__constraints[i].coefficients]))
             for j in range(i + 1, len(self.__constraints)):
                 intersection = self.__calculateIntersection(self.__constraints[i], self.__constraints[j])
                 if intersection is not None:
                     intersections.append(intersection)
         return intersections
 
-    def __calculateIntersection(self, constraint1: Constraint, constraint2: Constraint)-> np.ndarray:
+    def __calculateIntersection(self, constraint1: Constraint, constraint2: Constraint)-> np.ndarray | None:
         A = np.array([constraint1.coefficients, constraint2.coefficients])
         b = np.array([constraint1.value, constraint2.value])
         try:
