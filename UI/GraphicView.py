@@ -5,7 +5,7 @@ from UI.GraphView import GraphView
 from core.GraphicMethodSensibilityAnalizer import GraphicMethodSensibilityAnalizer
 
 class GraphicView(QMainWindow):
-    def __init__(self, constraints: list[Constraint], objectiveFunction: ObjectiveFunction, optimalPoint: list[float] = None, optimalValue: float = None):
+    def __init__(self, constraints: list[Constraint], objectiveFunction: ObjectiveFunction, optimalPoint: list[float] = [], optimalValue: float = 0):
         super().__init__()
         self.__constraints = constraints
         self.__optimalVarsValues = optimalPoint

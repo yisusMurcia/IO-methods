@@ -1,7 +1,14 @@
 # Changelog 📃
 
+## V 1.4.0 - 2026-07-27
+### Fixed
+- Issue with the program doesn´t considerate plane intersections for optimal points using the graphical method
+
+### Added
+- A tableu view process when the big M method is applied
+
 ## V 1.3.3 - 2026-06-04
-Fixed:
+### Fixed:
 - Empty window when use the back button
     - Deleting wrong view when using this function
 - Sensitivility analizer doesn´t working in big M method
